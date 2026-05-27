@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard PTA ECIEM 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F4F0;--sf:#FFF;--bd:#E2E0DA;--bdl:#EDECE8;--tx:#1A1917;--tx2:#6B6861;--tx3:#9E9B94;--bl:#1A4FBA;--blbg:#EBF0FA;--gn:#0D6E4A;--gnbg:#E5F5EE;--pu:#4A3BA8;--pubg:#EEECF8;--am:#A05F00;--ambg:#FDF3E3;--rd:#C13030;--rdbg:#FCEAEA;--or:#B05000;--orbg:#FEF0E5;}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tx);font-size:13px;min-height:100vh}
+.hdr{background:var(--tx);color:#fff;padding:16px 28px;display:flex;align-items:center;justify-content:space-between}
+.hdr-t{font-size:15px;font-weight:600;letter-spacing:-.01em}.hdr-s{font-size:11px;color:#9E9B94;margin-top:2px;font-family:'IBM Plex Mono',monospace}
+.hbg{font-family:'IBM Plex Mono',monospace;font-size:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:4px 10px;border-radius:4px;color:rgba(255,255,255,.7)}
+.main{max-width:980px;margin:0 auto;padding:24px 20px}
+.tabs{display:flex;border-bottom:2px solid var(--bd);margin-bottom:24px;overflow-x:auto}
+.tb{padding:9px 16px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;font-size:12px;font-weight:500;color:var(--tx2);font-family:'IBM Plex Sans',sans-serif;white-space:nowrap}
+.tb.active{color:var(--tx);border-bottom-color:var(--tx)}.tb:hover:not(.active){color:var(--tx);background:var(--bdl)}
+.tc{font-family:'IBM Plex Mono',monospace;font-size:10px;opacity:.6;margin-left:3px}
+.panel{display:none}.panel.active{display:block}
+.sbar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.sc{background:var(--sf);border:1px solid var(--bd);border-radius:6px;padding:12px 16px}
+.sn{font-size:22px;font-weight:600;font-family:'IBM Plex Mono',monospace;line-height:1}.sl{font-size:10px;color:var(--tx2);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:8px;margin-bottom:12px;overflow:hidden}
+.ct{padding:14px 16px}
+.ch{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;font-family:'IBM Plex Mono',monospace}
+.an{font-weight:600;font-size:14px;letter-spacing:-.01em}.as2{font-size:11px;color:var(--tx2);margin-top:2px}
+.bgs{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.bg{font-size:10px;padding:2px 7px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-weight:500}
+.bg-r{background:var(--blbg);color:var(--bl)}.bg-o{background:var(--orbg);color:var(--or)}.bg-k{background:var(--gnbg);color:var(--gn)}.bg-w{background:var(--ambg);color:var(--am)}.bg-a{background:#E8F5E9;color:#1B5E20}
+.ca{display:flex;gap:4px;margin-left:auto;flex-shrink:0}
+.ib{background:none;border:1px solid var(--bd);border-radius:4px;cursor:pointer;padding:4px 8px;font-size:12px;color:var(--tx2)}
+.ib:hover{background:var(--bg);color:var(--tx)}
+.dg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.db{border:1px solid var(--bd);border-radius:6px;padding:10px 12px;cursor:pointer}
+.db:hover{border-color:var(--tx2)}.db.ad{border-color:var(--tx)}
+.dlbl{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--tx3);margin-bottom:6px;font-weight:500}
+.dpct{font-size:20px;font-weight:600;font-family:'IBM Plex Mono',monospace;line-height:1}
+.dnm{font-size:10px;margin-top:3px}
+.dbarw{height:3px;background:var(--bdl);border-radius:2px;margin-top:8px;overflow:hidden}
+.dbarf{height:3px;border-radius:2px}
+.det{display:none;border-top:1px solid var(--bdl);background:var(--bg);padding:14px 16px}
+.det.open{display:block}
+.deth{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.detd{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dett{font-size:12px;line-height:1.7}
+.opan{border-top:1px solid var(--bdl);padding:10px 16px;background:#FFFBF0}
+.olbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--am);margin-bottom:4px}
+.otxt{font-size:12px;color:#7A5000;line-height:1.6}
+.hint{font-size:10px;color:var(--tx3);margin-bottom:8px;font-style:italic}
+.twarn{font-size:11px;color:var(--rd);padding:6px 16px;background:var(--rdbg);border-top:1px solid #f5c6c6}
+.addbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:none;border:1px dashed var(--bd);border-radius:8px;cursor:pointer;color:var(--tx2);font-size:12px;font-family:'IBM Plex Sans',sans-serif;margin-top:4px}
+.addbtn:hover{background:var(--sf);border-color:var(--tx2);color:var(--tx)}
+/* Resumen */
+.rg2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.rc{background:var(--sf);border:1px solid var(--bd);border-radius:8px;overflow:hidden}
+.rch{padding:12px 16px;border-bottom:1px solid var(--bdl);font-weight:600;font-size:13px;display:flex;align-items:center;gap:8px}
+.rcb{padding:14px 16px}
+table.rt{width:100%;border-collapse:collapse;font-size:12px}
+table.rt th{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--tx2);font-weight:500;padding:0 8px 8px 0;border-bottom:1px solid var(--bdl);text-align:left}
+table.rt td{padding:7px 8px 7px 0;border-bottom:1px solid var(--bdl);vertical-align:top;line-height:1.4}
+table.rt tr:last-child td{border-bottom:none}
+.chip{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;font-family:'IBM Plex Mono',monospace;margin:1px}
+.cw{background:#EBF0FA;color:#1A4FBA}.cs{background:#EEECF8;color:#4A3BA8}
+.c1{background:#E5F5EE;color:#0D6E4A}.c2{background:#FDF3E3;color:#A05F00}
+.c3{background:#FCEAEA;color:#C13030}.c4{background:#F5F4F0;color:#6B6861}
+.javg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.ja{background:var(--sf);border:1px solid var(--bd);border-radius:6px;padding:12px 14px}
+.jat{font-size:11px;font-weight:600;margin-bottom:10px}
+.jad{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.jal{font-size:11px;color:var(--tx2)}.jav{font-size:12px;font-weight:600;font-family:'IBM Plex Mono',monospace}
+.jabw{height:3px;background:var(--bdl);border-radius:2px;margin-top:2px;overflow:hidden;margin-bottom:6px}
+.jabf{height:3px;border-radius:2px}
+.rful{background:var(--sf);border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin-bottom:20px}
+/* Modal */
+.mo{display:none;position:fixed;inset:0;background:rgba(26,25,23,.5);z-index:200;align-items:center;justify-content:center}
+.mo.open{display:flex}
+.md{background:var(--sf);border-radius:10px;border:1px solid var(--bd);width:560px;max-width:95vw;max-height:90vh;overflow-y:auto}
+.mdh{padding:18px 20px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.mdh h3{font-size:14px;font-weight:600}
+.mdc{background:none;border:none;cursor:pointer;font-size:18px;color:var(--tx2);padding:0 4px}
+.mdb{padding:20px}
+.fr{margin-bottom:14px}
+.fr label{font-size:11px;color:var(--tx2);display:block;margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:.05em}
+.fr input,.fr textarea,.fr select{width:100%;font-size:13px;padding:8px 10px;border:1px solid var(--bd);border-radius:5px;background:var(--bg);color:var(--tx);font-family:'IBM Plex Sans',sans-serif}
+.fr input:focus,.fr textarea:focus,.fr select:focus{outline:none;border-color:var(--tx)}
+.dfg{display:grid;grid-template-columns:1fr 1fr;gap:10px}.dfg .fr{margin-bottom:0}
+.th{font-size:12px;padding:7px 10px;border-radius:5px;margin-top:8px;display:none;font-family:'IBM Plex Mono',monospace}
+.th.ok{background:var(--gnbg);color:var(--gn)}.th.bad{background:var(--rdbg);color:var(--rd)}
+.mdf{padding:14px 20px;border-top:1px solid var(--bd);display:flex;justify-content:flex-end;gap:8px}
+.btnc{padding:8px 18px;background:none;border:1px solid var(--bd);border-radius:5px;cursor:pointer;font-size:13px;color:var(--tx2);font-family:'IBM Plex Sans',sans-serif}
+.btns{padding:8px 18px;background:var(--tx);color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:13px;font-family:'IBM Plex Sans',sans-serif;font-weight:500}
+.sdiv{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--tx3);margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--bdl)}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="hdr-t">Dashboard PTA — ECIEM 2026</div><div class="hdr-s">Escuela de Ciencias Empresariales · UCN Sede Coquimbo</div></div>
+  <div class="hbg">17 académicos · 4 jerarquías</div>
+</div>
+<div class="main">
+  <div class="tabs">
+    <button class="tb active" onclick="sw('res')">📊 Resumen Escuela</button>
+    <button class="tb" onclick="sw('sj')">Sin Jerarquía<span class="tc">(5)</span></button>
+    <button class="tb" onclick="sw('as')">Asistente<span class="tc">(6)</span></button>
+    <button class="tb" onclick="sw('ac')">Asociado<span class="tc">(5)</span></button>
+    <button class="tb" onclick="sw('ti')">Titular<span class="tc">(1)</span></button>
+  </div>
+  <div id="p-res" class="panel active"></div>
+  <div id="p-sj" class="panel"></div>
+  <div id="p-as" class="panel"></div>
+  <div id="p-ac" class="panel"></div>
+  <div id="p-ti" class="panel"></div>
+</div>
+<div class="mo" id="mo">
+<div class="md">
+  <div class="mdh"><h3 id="mtit">Agregar</h3><button class="mdc" onclick="cm()">×</button></div>
+  <div class="mdb">
+    <div class="fr"><label>Nombre</label><input type="text" id="fn"></div>
+    <div class="fr"><label>Planta / Cargo</label><input type="text" id="fc"></div>
+    <div class="fr"><label>Estado PTA</label><select id="fe"><option value="r">En Revisión del Director</option><option value="o">Con Obs. del Director</option><option value="a">Aprobado</option></select></div>
+    <div class="sdiv">% por dimensión</div>
+    <div class="dfg" style="margin-bottom:8px">
+      <div class="fr"><label>Docencia %</label><input type="number" id="fd" min="0" max="100" step="1" placeholder="0"></div>
+      <div class="fr"><label>Investigación %</label><input type="number" id="fi" min="0" max="100" step="1" placeholder="0"></div>
+      <div class="fr"><label>Vinculación %</label><input type="number" id="fv" min="0" max="100" step="1" placeholder="0"></div>
+      <div class="fr"><label>Gestión %</label><input type="number" id="fg" min="0" max="100" step="1" placeholder="0"></div>
+    </div>
+    <div class="th" id="th"></div>
+    <div class="sdiv">Compromisos</div>
+    <div class="fr"><label>Docencia</label><textarea id="fdd" rows="2"></textarea></div>
+    <div class="fr"><label>Investigación</label><textarea id="fid" rows="2"></textarea></div>
+    <div class="fr"><label>Vinculación</label><textarea id="fvd" rows="2"></textarea></div>
+    <div class="fr"><label>Gestión</label><textarea id="fgd" rows="2"></textarea></div>
+    <div class="fr"><label>Observaciones de la Directora</label><textarea id="fod" rows="3"></textarea></div>
+    <div class="fr"><label>Otras observaciones</label><textarea id="fo" rows="2"></textarea></div>
+  </div>
+  <div class="mdf"><button class="btnc" onclick="cm()">Cancelar</button><button class="btns" onclick="sa()">Guardar</button></div>
+</div>
+</div>
+<script>
+const JL=['sj','as','ac','ti'];
+const LB={sj:'Sin Jerarquía',as:'Asistente',ac:'Asociado',ti:'Titular'};
+const DM=[{k:'d',l:'Docencia',c:'#1A4FBA'},{k:'i',l:'Investigación',c:'#0D6E4A'},{k:'v',l:'Vinculación',c:'#4A3BA8'},{k:'g',l:'Gestión',c:'#A05F00'}];
+const AV=[{bg:'#EBF0FA',co:'#1A4FBA'},{bg:'#E5F5EE',co:'#0D6E4A'},{bg:'#EEECF8',co:'#4A3BA8'},{bg:'#FDF3E3',co:'#A05F00'},{bg:'#FCEAEA',co:'#C13030'},{bg:'#F0F5F0',co:'#2D5A1B'}];
+
+const D={
+sj:[
+  {n:'Carla Andrade Arteaga',c:'Planta Temporal · Académico',e:'r',d:50,i:15,v:5,g:30,
+   dd:'Marketing I (C1 y C2), Intro. Administración (C2), Revisión Prácticas ECIEM, Colaborador PST, Evaluación Seminario Superior, Planificaciones didácticas Marketing I, Evaluador Integradores. Formación: Taller Ética UCN, Taller Instrumentos de Evaluación.',
+   id:'3 ponencias LACCEI 2026 Santiago (expositor y colaborador). 3 artículos Scopus Sin Clasificación (autora principal). Proyectos: Fondecyt Iniciación 2027 (a postular), Women UP I+D (aceptado). Revisora y miembro Comité Científico LACCEI.',
+   vd:'Reviewer y miembro Comité Científico 24th LACCEI International Multi-Conference.',
+   gd:'Jefe de carrera INGECO (Ene–Abr 2026). Consejo de Escuela, Comité Curricular INGECO, Consejo de Carrera INGECO, Comisión Rediseño INGECO.',
+   od:'DOCENCIA: El indicador "2.4.1 Matrícula" no corresponde a la Unidad; reemplazar por "2.2.2 Titulación oportuna" en todos los compromisos. INVESTIGACIÓN: Los dos compromisos LACCEI parecen referirse al mismo evento; aclarar o separar con precisión. No se declara publicación en revista indexada; incluir al menos una enviada o en proceso. Revisar si el indicador 3.1.2 aplica (requiere dos o más disciplinas de formación de base entre sus autores). VINCULACIÓN: No hay compromisos declarados; asignar un % bajo y comprometer al menos 1 charla, taller o asesoría con el sector empresarial regional o ex alumn@s. GESTIÓN: Incluir participación en Consejo de Escuela. En general, reforzar investigación y vinculación con el medio.',o:''},
+  {n:'Natalia Araya Plaza',c:'Planta Especial · Jefe de Carrera',e:'r',d:30,i:5,v:15,g:50,
+   dd:'Aplicaciones Computacionales (C1 y C2 sem. 1). 2 asignaturas sem. 2 (ingresar separadas). Revisor Prácticas INGECO-IICG. Evaluación Seminario de Título.',
+   id:'Proyecto GORE "Formación y Gobernanza para el Turismo Sostenible" (colaboradora, $200MM). Publicación: 1 artículo de investigación (Autor Correspondiente, no indexado).',
+   vd:'Talleres inserción laboral, Convenios Internacionales, Asignatura con impacto Socios Comunitarios (Integrador transversal IICG), Taller egresados IICG, Medios comunicación regional.',
+   gd:'Jefe de Carrera IICG (+300 estudiantes). Consejo de Carrera IICG, Comité Curricular IICG, Consejo de Escuela.',
+   od:'DOCENCIA: Ingresar asignaturas de segundo semestre de forma separada (Asignatura 1, Asignatura 2...). Los compromisos no tienen indicadores PDU/PDE asociados; corregir antes de aprobar. INVESTIGACIÓN: Sin sugerencias dado el rol principal; asociar indicadores PDU/PDE a cada compromiso. VINCULACIÓN: Ninguna de las cinco actividades tiene indicadores PDU/PDE; corregir (quedan sin trazabilidad institucional). GESTIÓN: Carga significativa y coherente con el cargo. Realizar los cambios solicitados.',o:''},
+  {n:'Boris Bugueño Bugueño',c:'Planta Especial · Académico',e:'r',d:45,i:10,v:20,g:25,
+   dd:'Sistemas de Información (INGECO C1), Programación (IICG C1), Base de Datos (IICG C1) — sem. 1. 3 asignaturas sem. 2 (ingresar separadas). Evaluación prácticas e IICG, seminarios de título, A+S Integrador Transversal IICG, Colaborador Finanzas Corporativas. Postgrado: Ciencia de Datos y Aplicaciones (MBA).',
+   id:'Proyectos GORE: Director "Tecnología y Capital Humano para el Agro Sustentable" ($151MM); Director alterno "Tecnología y Sostenibilidad para MIPYMEs Agrícolas" ($149MM). Sin publicaciones declaradas.',
+   vd:'Talleres inserción laboral, Convenios Internacionales, Navidad con Sentido, A+S Integradores 1 y 2 INGECO, A+S Integrador Transversal IICG, Taller Alumni INGECO y IICG, Nueva página web ECIEM, Medios comunicación regional.',
+   gd:'Secretario Vinculación con el Medio ECIEM. Comité Curricular IICG. Consejo de Escuela.',
+   od:'DOCENCIA: El compromiso N°2 declara tres asignaturas en un solo compromiso; ingresar cada una por separado. VINCULACIÓN: Tres compromisos (integradores N°6 y N°7) no tienen indicadores PDU/PDE; asociarlos. INVESTIGACIÓN y GESTIÓN: Sin observaciones. PTA robusto y consistente con la jerarquía.',o:''},
+  {n:'Sofia Orazi',c:'Planta Especial · Académico',e:'r',d:30,i:30,v:20,g:20,
+   dd:'PST Marketing (C1), Comercio Internacional (C1), Introducción a la Economía (C1 y C2) — sem. 1. Sin proyección docente para segundo semestre declarada. Evaluación prácticas declarada en Gestión (debe moverse a Docencia).',
+   id:'Publicación sin título, índice ni cuartil ("No aplica") — compromiso muy vago para un peso del 30%. Ponencia SOCHER 2026 Coquimbo. Estadía Bahía Blanca Argentina (julio). Integrante Comité Doctoral U. Católica Santa Fe.',
+   vd:'Grupo Investigación "Economía Internacional y Desarrollo de Bahía Blanca". Proyecto "Brechas digitales TIC" (U. Nacional del Sur, Argentina). Dirección estudiantes SS con agentes locales clave.',
+   gd:'Comisión Rediseño INGECO (sin indicadores). Consejo de Escuela (sin indicadores). Evaluación prácticas (debe pasarse a Docencia).',
+   od:'DOCENCIA: Incorporar proyección de docencia para segundo semestre asignatura por asignatura. La evaluación de prácticas preprofesionales debe moverse de Gestión a Docencia. INVESTIGACIÓN: La publicación no tiene título ni cuartil; precisar al menos el tema y tipo de revista para dar trazabilidad al 30% de peso. GESTIÓN: Los tres compromisos no tienen indicadores PDU/PDE; corregir (especialmente Comisión de Rediseño: indicador 2.3.1).',o:''},
+  {n:'Pablo Rodríguez Rodríguez',c:'Planta Temporal · Académico',e:'r',d:65,i:20,v:5,g:10,
+   dd:'Estadística I (INGECO C1), Econometría (INGECO C1 + 2 paralelos sem. 2), Métodos Cuantitativos para la Gestión (INGECO, curso nuevo), Aprendizaje Estadístico IICG. Postgrado: Métodos Cuantitativos MACE (MCO y Variables Instrumentales). Compromisos bien descritos y articulados con perfil de egreso.',
+   id:'Ponencia SOCHER 2026 Coquimbo (expositor — corregir error tipográfico fechas: nov 2025→nov 2026). Publicaciones: "Earthquakes and Human Capital" WoS Q2 (autor principal), "Cognitive Costs of Childhood Obesity" WoS Q3 (coautor).',
+   vd:'Mesa interdisciplinaria SOCHER 2026 (coordinación actores académicos, públicos, privados).',
+   gd:'Consejo de Escuela ECIEM. Coordinación organización SOCHER 2026 (Campus Guayacán UCN).',
+   od:'DOCENCIA: Sin observaciones; compromisos bien elaborados. INVESTIGACIÓN: Corregir error tipográfico en fechas del congreso (nov 2025 → nov 2026). Valorar incorporar actividad adicional en investigación dadas las proyecciones del académico. VINCULACIÓN: Hay oportunidades naturales de vinculación regional (SOCHER + investigación sobre terremoto 2010 y capital humano); incorporar al menos una actividad formal en VcM. GESTIÓN: El compromiso SOCHER tiene solo indicador 5.3.2; enriquecer con indicadores de vinculación e internacionalización.',o:''},
+],
+as:[
+  {n:'Karen Vargas Santander',c:'Planta Oficial · Directora ECIEM',e:'a',d:20,i:15,v:15,g:50,
+   dd:'Finanzas Corporativas (C1 y C2 sem. 1). PST Gestión y Estrategias (C1 sem. 1). Seminario de Título Gestión y Estrategias (sem. 2). Evaluadora Preparaciones Seminarios de Título (sem. 1) y Comisión evaluadora Seminarios de Título (sem. 2). Postgrado: Guía Tesis de Grado MACE 2026. Formación continua: Certificación docente 2026.',
+   id:'Ponencia: XII Congreso Internacional sobre Innovación y Tendencias en Procesamiento de Alimentos / XXVII Congreso Nacional Ciencia y Tecnología de Alimentos — Guanajuato, México (may 2026, expositora invitada U. Guanajuato). Proyecto "Sostenibilidad y Competitividad en Empresas Familiares: el Impacto de las Prácticas ESG" — U. de Murcia, España (PID2024-159036NA-I00, colaboradora, 2025–2028). Publicación: "The Talk-Walk Gap in ESG: Financial Market Penalties and the Amplifying Role of Financial Constraints" — WoS Q1 (autora principal). Revisión de al menos 2 artículos de revistas indexadas.',
+   vd:'Dirección Observatorio Laboral Regional de Coquimbo (OLR). Apariciones en prensa regional (≥4). 2 seminarios en formato asesoría con estudiantes INGECO (Facultad de Medicina UCN y empresa GoIntegreat). Organización SOCHER 2026.',
+   gd:'Directora ECIEM. Consejo de Escuela (100%). Representante UCN en COSOC-SENCE. Comisión Rediseño INGECO (2026). Organización SOCHER 2026.',
+   od:'PTA Aprobado.',o:''},
+  {n:'Mirza Cequea',c:'Planta Oficial · Académico',e:'r',d:40,i:40,v:10,g:10,
+   dd:'PST Plan. y Control de Gestión (C1), Sistemas de Control de Gestión (C1), Implementación Sist. Cont. Gestión (C1) — sem. 1. SS Planificación y Gestión + 2 asignaturas pregrado sem. 2.',
+   id:'4 publicaciones WoS/Scopus Q2: "Uncorking Change" (WoS Q2, coautora), "South–South Skilled Migration Paradox" (WoS Q2, autora principal), "Mapping Digital Transformation onto RDF" (Scopus Q2, coautora), "Human Capital, Decent Work" (WoS Q2, autora principal). Revisión 2 artículos WoS.',
+   vd:'Programa Impulsa Emprendimiento Coquimbo (facilitadora Pilares Sostenibilidad y Liderazgo, may–jun 2026).',
+   gd:'Consejo de Escuela ECIEM. Comité MBA. Consejo de Carrera IICG.',
+   od:'Sin observaciones.',o:''},
+  {n:'Fernando González',c:'Planta Oficial · Académico',e:'r',d:25,i:50,v:20,g:5,
+   dd:'Finanzas Corporativas (INGECO C1 y C2 sem. 1), PST Economía (C1 sem. 1). Sin proyección docente para sem. 2 declarada. Asociar indicadores PDU/PDE a todos los compromisos.',
+   id:'Ponencia SOCHER 2026 (expositor). Proyectos FRDP GORE (registrar por separado): "Tecnología y Capital Humano para el Agro Sustentable" (coinvestigador, $150MM) y "Tecnología y Sostenibilidad para MIPYMEs Agrícolas" (coinvestigador, $149MM). Publicación: 1 artículo WoS Q1 (autor principal).',
+   vd:'Economista Senior OLR Coquimbo: reportes mensuales, trimestrales y anuales, impacto cambio climático — sin indicadores PDU/PDE; corregir.',
+   gd:'Consejo de Carrera INGECO. Consejo de Escuela. Agregar: Comisión organizadora SOCHER 2026.',
+   od:'DOCENCIA: Incluir proyección segundo semestre asignatura por asignatura; asociar indicadores PDU/PDE. INVESTIGACIÓN: Registrar los dos proyectos FRDP por separado. Comprometer ponencia SOCHER 2026. Todos los compromisos con indicadores PDU/PDE. VINCULACIÓN: Actividad OLR sin indicadores; corregir. GESTIÓN: Agregar comisión organizadora SOCHER 2026. PTA robusto; incorporar observaciones antes de aprobar.',o:''},
+  {n:'Rodrigo Sfeir Yazigi',c:'Planta Oficial · Secretario Docente',e:'r',d:25,i:25,v:10,g:40,
+   dd:'Microeconomía II (C1 y C2 sem. 1). Material docente: manual tipo notas de clases Microeconomía II.',
+   id:'Proyecto GORE en ejecución: "Inteligencia Territorial para la Empleabilidad Regional" (IP, $19.963MM FICR). Estudio modelos subcontratación industria transporte terrestre de carga.',
+   vd:'Estudio técnico: Modelos de Subcontratación en la Industria de Transporte Terrestre de Carga.',
+   gd:'Secretario Docente ECIEM. Consejo de Escuela.',
+   od:'Sin observaciones.',o:''},
+  {n:'Oswaldo Terán Villegas',c:'Planta Oficial · Académico',e:'o',d:47,i:30,v:8,g:15,
+   dd:'PST Plan. y Control de Gestión (C2 sem. 1), Planificación Estratégica (C1 y C2 sem. 1). Sem. 2: Herramientas de Control de Gestión, Gestión Estratégica IICG, Seminario Tesis IICG. Evaluador prácticas, PST, seminarios de título e integradores.',
+   id:'Publicaciones: Scopus Q3 (rendimiento estudiantes ECIEM, coautor) y WoS Q2 (fake news, autor principal). Ambas como coautor; sin proyecto en ejecución ni en postulación.',
+   vd:'"La Tecnocracia" (artículo divulgación Semanario Tiempo). Planes Control de Gestión: Farmacias Dr. Amigo, Transportes Callegari, Recon Drilling Chile SPA.',
+   gd:'Consejo de Escuela. Comité Curricular IICG. Consejo de Carrera IICG.',
+   od:'INVESTIGACIÓN: Ambas publicaciones son como coautor sin ninguna como autor principal o correspondiente; insuficiente para demostrar autonomía investigativa para un Asistente. Ambas en Q3; elevar el estándar. No hay proyecto en ejecución ni en postulación — con 30% de peso en investigación, vacío importante. VINCULACIÓN: Un artículo de opinión en semanario local no constituye por sí solo vinculación con el medio en sentido reglamentario para un Asistente. Incorporar al menos una actividad con mayor continuidad e impacto en el entorno regional (control de gestión y planificación estratégica tienen aplicación directa en sector empresarial y público). GESTIÓN: Sin observaciones.',
+   o:'PTA con observaciones del Director — pendiente de corrección y reenvío.'},
+  {n:'Erick De La Barra Olivares',c:'Planta Oficial · Académico',e:'o',d:40,i:40,v:5,g:15,
+   dd:'Estadística II (C1 y C2 INGECO sem. 1), Estadística II (C1 IICG sem. 1). Sem. 2: 3 cursos Estadística I (2 paralelos INGECO + 1 paralelo IICG). Formación continua: cursos DIDEC e institución externa, certificación docente. Faltan: Comisión revisión seminarios de título, clases postgrado MACE, evaluación prácticas pre-profesionales.',
+   id:'Proyecto "Centro regional de datos" en estado "A Postular" con inicio enero 2027 — sin proyecto en ejecución durante todo el 2026. El 40% de investigación queda prácticamente vacío. La disponibilidad como revisor está condicionada a invitación, lo que no es un compromiso activo.',
+   vd:'Programa Impulsa Emprendimiento Coquimbo (facilitador, may–jun 2026) — sin indicadores PDU/PDE.',
+   gd:'Consejo de Carrera INGECO (miembro). Consejo de Escuela (≥ 90% sesiones).',
+   od:'DOCENCIA: Incorporar: Comisión revisión seminarios de título, clases postgrado MACE, evaluación prácticas pre-profesionales, guía de tesis MACE (si corresponde). INVESTIGACIÓN: El proyecto GORE está "A Postular" con inicio en 2027; el 2026 queda sin actividad real de investigación para un 40% de peso. La disponibilidad como revisor condicionada a invitación no es un compromiso activo; reformular compromisos de esta dimensión. VINCULACIÓN: La actividad no tiene indicadores PDU/PDE. Para un Asistente se esperan roles de liderazgo en VcM, no solo participación; incorporar al menos una actividad adicional con indicadores institucionales. GESTIÓN: Compromisos adecuados para la jerarquía.',
+   o:'PTA con observaciones del Director — pendiente de corrección y reenvío.'},
+],
+ac:[
+  {n:'Tomás Bas',c:'Planta Oficial · Académico',e:'r',d:40,i:45,v:5,g:10,
+   dd:'Sustentabilidad y Economía Circular + Economía Circular (cursos nuevos sem. 1). Evaluación prácticas. Guía 5 seminarios PST Innovación (reunión semanal/grupo). Seminario Superior Innovación sem. 2. Evaluación seminarios comisión y Working Paper. Postgrado: Seminario IV MACE (incluir explícitamente).',
+   id:'Proyectos: "Percepciones inclusión discapacidad educación superior" UCN-U.Andes (IP, $9.4MM, 2025–2027, corregir fecha término: 2207→2027); "Chaire Entrepreneuriat et Intrapreneuriat" IMSGeneva (IP, $20MM, 2023–2028). Ponencia WCTE Coquimbo oct 2026. Publicaciones WoS Q1: "Dietary Polyphenols Flavonoids" (autor principal), "Advances in Biosimilars" (coautor); prólogo IGI Global. Compromisos muy sólidos.',
+   vd:'Editor en Jefe "International Journal of Biotechnology" (Scopus). Centro investigación IMSG Emprendimiento e Intraemprendimiento.',
+   gd:'Comité Curricular INGECO. Consejo de Escuela. Comité Postgrado MBA. Claustro MACE.',
+   od:'DOCENCIA: Incluir explícitamente la participación como profesor del MACE en Seminario IV. Corregir indicador "2.2.3 Graduación oportuna doctorados" — el compromiso asociado es de Pregrado. INVESTIGACIÓN: Corregir error tipográfico en fecha término del proyecto (2207 → 2027). Compromisos robustos y consistentes con la jerarquía.',o:''},
+  {n:'Vannessa Duarte Correa',c:'Planta Oficial · Académico',e:'r',d:37,i:37,v:10,g:16,
+   dd:'PST Sistemas de Información (C1), SS Sistemas de Información (C1), Big Data para Toma de Decisiones (C1) — sem. 1. Sem. 2: Desarrollo de SIAs (edu. basada en simulación). Guía seminarios título. Revisión prácticas INGECO e IICG. Formación: curso Investigación y género, Taller Evaluación por Competencias.',
+   id:'Proyecto interno: "Bienestar estudiantil UCN" (coinvestigadora, $5MM FDPD). Publicaciones WoS Q1: "Advances in biosimilars" (autora principal, Pharmaceutics), 2do artículo WoS Q1 (autora principal). Asociar indicadores 3.4.1 y 3.4.2 a publicaciones.',
+   vd:'Actividades titulación en Inteligencia de Negocio para empresas minería y transporte. Colaboración CESFAM del Sauce (encuesta climaterio). Incorporar al menos una actividad adicional con mayor alcance (taller, exposición para empresas, alumnos, comunidad o ex alumnos).',
+   gd:'Consejo de Carrera IICG. Comité Curricular IICG. Consejo de Escuela ECIEM.',
+   od:'DOCENCIA: Compromisos robustos y coherentes con la jerarquía. INVESTIGACIÓN: Asociar indicadores PDU/PDE a todos los compromisos (3.4.1 Liderazgo en Publicaciones y 3.4.2 Índice de productividad científica para las publicaciones WoS Q1). VINCULACIÓN: Dado el potencial del área de Sistemas de Información e Inteligencia de Negocio con el sector productivo regional (minería, agricultura, servicios), incorporar al menos una actividad adicional de mayor alcance. GESTIÓN: Compromisos adecuados y coherentes con la jerarquía.',o:''},
+  {n:'Mauricio Gallardo Altamirano',c:'Planta Oficial · Secretario de Investigación',e:'r',d:35,i:35,v:5,g:25,
+   dd:'Métodos Cuantitativos I (C1 sem. 1), Métodos Cuantitativos para la Administración (C1 sem. 1). Evaluación seminario titulación y prácticas. Postgrado: Métodos Cuantitativos I y II MACE (material didáctico), Ética y Responsabilidad Empresarial MBA. Falta incluir proyección segundo semestre y docencia postgrado de forma explícita.',
+   id:'Ponencia Conferencia Internacional nov 2026. Proyectos: "Perspectivas latinoamericanas ética del antropoceno" ICALA (IP); "Observatorio investigación enfermedades del buceo" GORE (coinvestigador, $2.000MM). Publicaciones WoS Q3. Revisor 4 artículos WoS/Scopus. Miembro Comité Editorial SAGE OPEN (WoS Q1).',
+   vd:'Miembro Comité Editorial revista SAGE OPEN (WoS Q1).',
+   gd:'Secretario de Investigación ECIEM (cargo aparece como "Sin especificar" en sistema; corregir). Subdirector MACE. Comisión Autoevaluación MACE (sin indicadores PDU/PDE; corregir). Consejo de Escuela.',
+   od:'DOCENCIA: Incluir proyección de docencia para segundo semestre y la docencia de postgrado (MACE y MBA) de forma explícita. INVESTIGACIÓN: Sin observaciones. VINCULACIÓN: Sin observaciones. GESTIÓN: La Comisión de Autoevaluación de Postgrado no tiene indicadores PDU/PDE; corregir. El cargo de Secretario de Investigación aparece como "Sin especificar" en el sistema; error formal menor que debe corregirse.',o:''},
+  {n:'Karla Soria Barreto',c:'Planta Oficial · Académico · Directora MBA',e:'r',d:25,i:35,v:15,g:25,
+   dd:'PST Emprendimiento e Innovación, Seminario de Investigación I, Integrador I — sem. 1. Guía 5 actividades titulación Emprendimiento. A+S Integrador I (6 empresas). Postgrado: Tópicos Avanzados Emprendimiento MACE, Seminario 1 MACE (6 estudiantes híbrido), guía tesis MACE (Wilsia Pizarro), guía actividad graduación MBA (Oscar Acuña y Ma. Fernanda Neira). Asociar indicadores PDU/PDE a compromisos docentes.',
+   id:'Proyecto GORE "Formación y Gobernanza para el Turismo Sostenible" (IP, $200MM — verificar monto en sistema: aparece $200.000, probable error tipográfico). Publicaciones: "From Altruistic Values" WoS Q2 (autora principal), "Socioeconomic inequalities dental care Spain" Scopus Q1 (coautora), "Exploring influence university education" WoS Q3 (autora principal), capítulo libro RRHH sostenible.',
+   vd:'Programa SaviaLab 2026 (innovación temprana, 8 liceos). Difusión proyectos Savialab y Turismo Sostenible. Ninguna actividad tiene indicadores PDU/PDE; asociar 4.1.1 y 4.4.1 para SaviaLab.',
+   gd:'Directora MBA ECIEM. Comisión Evaluación Vicerrectoría de Sede. Comité Curricular IICG. Consejo de Escuela. Comisión Autoevaluación MACE. Comité MACE. Ningún compromiso de gestión tiene indicadores PDU/PDE; corregir dado el 25% de peso.',
+   od:'DOCENCIA: Asociar indicadores PDU/PDE a los compromisos. INVESTIGACIÓN: El monto del proyecto GORE aparece como $200.000 en el sistema, probablemente un error tipográfico; verificar. Asociar indicadores PDU/PDE. VINCULACIÓN: Ninguna actividad tiene indicadores PDU/PDE; asociar (4.1.1 y 4.4.1 para SaviaLab). GESTIÓN: Ningún compromiso tiene indicadores PDU/PDE; corregir, especialmente con un 25% de peso en esta dimensión.',o:''},
+  {n:'Andres Vallone',c:'Planta Oficial · Académico',e:'o',d:35,i:45,v:10,g:10,
+   dd:'Teoría Microeconómica (C1 sem. 1), Microeconomía I (C1 y C2 sem. 1). Asignatura por definir sem. 2. Evaluación prácticas y seminarios de titulación. Conviene incluir contribución docente en el MACE o MBA.',
+   id:'Ponencia Seminario Investigación Políticas Públicas (mar 2026). Proyectos GORE: Director "Tecnología y Sostenibilidad MIPYMEs Agrícolas" ($149MM); Coinvestigador "Tecnología y Capital Humano Agro Sustentable" ($151MM); Coinvestigador "Inteligencia Territorial Empleabilidad Regional" ($1.992MM). Publicaciones: artículo WoS Q1 y Scopus Q4 (coautor, por definir).',
+   vd:'Difusión proyecto FRDP en redes sociales y medios.',
+   gd:'Comité MACE. Consejo de Escuela. Comité MBA. Comisión evaluación Facultad de Ciencia del Mar (evaluador externo).',
+   od:'DOCENCIA: Conviene incluir contribución docente en el MACE o MBA; el aporte de cada académico a la oferta de postgrado de ECIEM es relevante, en especial si planea proyectar su jerarquización. INVESTIGACIÓN y VINCULACIÓN: Sin observaciones específicas. PTA coherente con la jerarquía.',
+   o:'PTA con observaciones del Director — pendiente de corrección y reenvío.'},
+],
+ti:[
+  {n:'Sergio Zúñiga Jara',c:'Planta Oficial · Académico',e:'r',d:25,i:30,v:25,g:20,
+   dd:'PST Finanzas y Evaluación (C1 sem. 1), Costos y Presupuestos (C1 sem. 1), Integrador II: Taller de Negocio (C1 sem. 1). Sin evaluaciones seminario sem. 2, sin prácticas pre-profesionales, sin proyección docente sem. 2, sin docencia MBA, sin innovación en el aula, sin certificación MEI.',
+   id:'2 artículos Scopus Q3 (coautor, sin título). Sin proyectos, ponencias ni reconocimiento de pares. Sin indicadores PDU/PDE.',
+   vd:'2 apariciones en prensa 2026 (error en descripción: dice "2024"; corregir). Sin indicadores PDU/PDE. El compromiso no soporta el 25% de peso de esta dimensión.',
+   gd:'Integrante Consejo de Escuela (sin indicadores PDU/PDE, sin descripción de aporte). Un solo compromiso no soporta el 20% de peso de esta dimensión.',
+   od:'DOCENCIA: Incluir evaluaciones de seminario segundo semestre, prácticas pre-profesionales, proyección docente segundo semestre, clases MBA, actividades de innovación en el aula, y certificación Modelo Educativo Institucional 2026. INVESTIGACIÓN: Explicitar títulos tentativos de los artículos. Incluir al menos una publicación como autor principal y mejorar el cuartil (hacia Q1-Q2). Incorporar proyectos de investigación, ponencia en congreso y reconocimiento de pares. Asociar indicadores PDU/PDE. VINCULACIÓN: Corregir error año en descripción (2024→2026). Asociar indicadores. El compromiso actual no soporta el 25% de peso; incorporar actividades con mayor impacto bidireccional con el entorno. GESTIÓN: Un solo compromiso sin indicadores no soporta el 20% de peso; incorporarse a alguna comisión o reducir el porcentaje y proyectar mayor gestión en el PTA 2027. Asociar indicadores PDU/PDE al compromiso declarado.',o:''},
+]};
+
+let ej=null,ei=null;
+function ini(n){return n.split(' ').filter(w=>w).slice(0,2).map(w=>w[0]).join('').toUpperCase();}
+function avc(n){let h=0;for(let c of n)h=(h*31+c.charCodeAt(0))&0xffff;return AV[h%AV.length];}
+
+function td(id,k){
+  DM.forEach(d=>{const e=document.getElementById('dt_'+id+'_'+d.k);const b=document.getElementById('db_'+id+'_'+d.k);if(e)e.classList.remove('open');if(b)b.classList.remove('ad');});
+  const el=document.getElementById('dt_'+id+'_'+k),btn=document.getElementById('db_'+id+'_'+k);
+  if(el&&!el.classList.contains('open')){el.classList.add('open');if(btn)btn.classList.add('ad');}
+}
+
+function eb(e){
+  if(e==='a')return '<span class="bg bg-a">PTA Aprobado</span>';
+  if(e==='o')return '<span class="bg bg-o">PTA con Obs. Director</span>';
+  return '<span class="bg bg-r">PTA en Revisión Director</span>';
+}
+
+function rp(j){
+  const p=document.getElementById('p-'+j),l=D[j];
+  const caprov=l.filter(a=>a.e==='a').length;
+  const ceo=l.filter(a=>a.e==='o').length;
+  let h=`<div class="sbar">
+    <div class="sc"><div class="sn">${l.length}</div><div class="sl">Académicos</div></div>
+    <div class="sc"><div class="sn" style="color:#1B5E20">${caprov}</div><div class="sl">Aprobados</div></div>
+    <div class="sc"><div class="sn" style="color:var(--or)">${ceo}</div><div class="sl">Con Obs. Director</div></div>
+    <div class="sc"><div class="sn" style="color:var(--bl)">${l.length-ceo-caprov}</div><div class="sl">En Revisión</div></div>
+  </div>`;
+  l.forEach((a,idx)=>{
+    const id=j+'_'+idx,av=avc(a.n);
+    const hod=a.od&&a.od.trim()&&a.od!=='Sin observaciones.'&&a.od!=='PTA Aprobado.';
+    const ho=a.o&&a.o.trim();
+    const tot=DM.reduce((s,d)=>s+(parseFloat(a[d.k])||0),0);
+    h+=`<div class="card"><div class="ct">
+      <div class="ch">
+        <div class="av" style="background:${av.bg};color:${av.co}">${ini(a.n)}</div>
+        <div style="flex:1;min-width:0"><div class="an">${a.n}</div><div class="as2">${a.c}</div>
+        <div class="bgs">${eb(a.e)}${hod?'<span class="bg bg-w">Con obs. Directora</span>':'<span class="bg bg-k">Sin obs. pendientes</span>'}</div></div>
+        <div class="ca"><button class="ib" onclick="oe('${j}',${idx})">✎</button><button class="ib" onclick="da('${j}',${idx})">✕</button></div>
+      </div>
+      <div class="hint">Clic en dimensión para ver compromisos detallados</div>
+      <div class="dg">`;
+    DM.forEach(d=>{
+      const val=parseFloat(a[d.k])||0;
+      h+=`<div class="db" id="db_${id}_${d.k}" onclick="td('${id}','${d.k}')">
+        <div class="dlbl">${d.l}</div><div class="dpct" style="color:${d.c}">${val>0?val+'%':'—'}</div>
+        <div class="dnm" style="color:${d.c};opacity:.7">${d.l}</div>
+        <div class="dbarw"><div class="dbarf" style="width:${Math.min(val,100)}%;background:${d.c}"></div></div>
+      </div>`;
+    });
+    h+=`</div>`;
+    if(Math.round(tot)!==100&&tot>0)h+=`<div class="twarn">⚠ Total: ${Math.round(tot)}% — debe sumar 100%</div>`;
+    h+=`</div>`;
+    DM.forEach(d=>{
+      h+=`<div class="det" id="dt_${id}_${d.k}">
+        <div class="deth" style="color:${d.c}"><div class="detd" style="background:${d.c}"></div>${d.l} — Compromisos</div>
+        <div class="dett">${a[d.k+'d']||'<em style="color:#9E9B94">Sin detalle.</em>'}</div>
+      </div>`;
+    });
+    if(hod)h+=`<div class="opan"><div class="olbl">📋 Observaciones de la Directora</div><div class="otxt">${a.od}</div></div>`;
+    if(ho)h+=`<div class="opan" style="background:#FFF8F0"><div class="olbl" style="color:var(--or)">⚠ Otras observaciones</div><div class="otxt" style="color:#7A4000">${a.o}</div></div>`;
+    h+=`</div>`;
+  });
+  h+=`<button class="addbtn" onclick="oa('${j}')">+ Agregar académico a ${LB[j]}</button>`;
+  p.innerHTML=h;
+}
+
+function renderRes(){
+  const p=document.getElementById('p-res');
+  const todos=[...D.sj,...D.as,...D.ac,...D.ti];
+  const jers=[{l:'Sin Jerarquía',d:D.sj,c:'#6B6861'},{l:'Asistente',d:D.as,c:'#1A4FBA'},{l:'Asociado',d:D.ac,c:'#0D6E4A'},{l:'Titular',d:D.ti,c:'#A05F00'}];
+  function avg(arr,k){return arr.length?Math.round(arr.reduce((s,a)=>s+(parseFloat(a[k])||0),0)/arr.length):0;}
+  const pubs=[
+    {a:'Carla Andrade',t:'Ecuadorian Cocoa and the Multiparty Trade Agreement',x:'Scopus',q:'SC',j:'SJ'},
+    {a:'Carla Andrade',t:'Team Coaching and Cultural Intelligence in International Negotiation',x:'Scopus',q:'SC',j:'SJ'},
+    {a:'Carla Andrade',t:'Competitiveness and Trade Dynamics of Hass Avocado in the United States',x:'Scopus',q:'SC',j:'SJ'},
+    {a:'Sofia Orazi',t:'Artículo medios de pago electrónicos Argentina',x:'Scopus',q:'Q1',j:'SJ'},
+    {a:'Pablo Rodríguez',t:'Earthquakes and Human Capital: Midterm Effects of the 2010 Chile Earthquake',x:'WoS',q:'Q2',j:'SJ'},
+    {a:'Pablo Rodríguez',t:'Exploring the Cognitive Costs of Childhood Obesity: The Case of Math Skills',x:'WoS',q:'Q3',j:'SJ'},
+    {a:'Karen Vargas',t:'The Talk-Walk Gap in ESG: Financial Market Penalties and the Amplifying Role of Financial Constraints',x:'WoS',q:'Q1',j:'AS'},
+    {a:'Mirza Cequea',t:'Uncorking Change: Female Leadership and Sustainable Transformation in the Chilean Wine Industry',x:'WoS',q:'Q2',j:'AS'},
+    {a:'Mirza Cequea',t:'The South-South Skilled Migration Paradox: Human Capital and Decent Work among Venezuelan Migrants in Chile',x:'WoS',q:'Q2',j:'AS'},
+    {a:'Mirza Cequea',t:'Mapping Digital Transformation onto the Researcher Development Framework',x:'Scopus',q:'Q2',j:'AS'},
+    {a:'Mirza Cequea',t:'Human Capital, Decent Work, and Integration: The Voice of Venezuelan Migrants in the Chilean Labour Market',x:'WoS',q:'Q2',j:'AS'},
+    {a:'Fernando González',t:'Publicación WoS Q1 (autor principal)',x:'WoS',q:'Q1',j:'AS'},
+    {a:'Erick De La Barra',t:'Non extensive entropies and linear regression',x:'WoS',q:'Q2',j:'AS'},
+    {a:'Oswaldo Terán',t:'Artículo rendimiento estudiantes ECIEM UCN (coautor)',x:'Scopus',q:'Q3',j:'AS'},
+    {a:'Oswaldo Terán',t:'Medios de comunicación social y fake news (autor principal)',x:'WoS',q:'Q2',j:'AS'},
+    {a:'Tomás Bas',t:'Dietary Polyphenols (Flavonoids) Derived from Plants for Use in Therapeutic Health',x:'WoS',q:'Q1',j:'AC'},
+    {a:'Tomás Bas',t:'Advances in biosimilars: A systematic review of Machine Learning applications',x:'WoS',q:'Q1',j:'AC'},
+    {a:'Vannessa Duarte',t:'Advances in biosimilars (Pharmaceutics, autora principal)',x:'WoS',q:'Q1',j:'AC'},
+    {a:'Vannessa Duarte',t:'Artículo WoS Q1 (autora principal)',x:'WoS',q:'Q1',j:'AC'},
+    {a:'Mauricio Gallardo',t:'Artículo WoS Q3 (autor correspondiente, por definir)',x:'WoS',q:'Q3',j:'AC'},
+    {a:'Mauricio Gallardo',t:'Perspectivas latinoamericanas para una ética del antropoceno',x:'WoS',q:'Q3',j:'AC'},
+    {a:'Karla Soria',t:'From Altruistic Values to Sustainable Entrepreneurial Intention',x:'WoS',q:'Q2',j:'AC'},
+    {a:'Karla Soria',t:'Socioeconomic inequalities in unmet dental care needs in Spain',x:'Scopus',q:'Q1',j:'AC'},
+    {a:'Karla Soria',t:'Exploring the influence of university education on sustainable entrepreneurial intention',x:'WoS',q:'Q3',j:'AC'},
+    {a:'Andres Vallone',t:'Artículo WoS Q1 (coautor, por definir)',x:'WoS',q:'Q1',j:'AC'},
+    {a:'Andres Vallone',t:'Artículo Scopus Q4 (coautor, por definir)',x:'Scopus',q:'Q4',j:'AC'},
+    {a:'Sergio Zúñiga',t:'Artículo Scopus Q3 #1 (coautor, sin título declarado)',x:'Scopus',q:'Q3',j:'TI'},
+    {a:'Sergio Zúñiga',t:'Artículo Scopus Q3 #2 (coautor, sin título declarado)',x:'Scopus',q:'Q3',j:'TI'},
+  ];
+  const projs=[
+    {n:'Tecnología y Capital Humano para el Agro Sustentable',t:'GORE FRDP',m:'$151MM',s:'En ejecución',a:'Boris Bugueño (IP), Fernando González (Co), Andres Vallone (Co)'},
+    {n:'Tecnología y Sostenibilidad para MIPYMEs Agrícolas',t:'GORE FRDP',m:'$149MM',s:'En ejecución',a:'Boris Bugueño (Dir. alt.), Andres Vallone (IP), Fernando González (Co)'},
+    {n:'Inteligencia Territorial para la Empleabilidad Regional',t:'GORE FICR',m:'$19.963MM',s:'En ejecución',a:'Rodrigo Sfeir (IP), Andres Vallone (Co)'},
+    {n:'Formación y Gobernanza para el Turismo Sostenible',t:'GORE FICR',m:'$200MM',s:'En ejecución',a:'Karla Soria (IP), Natalia Araya (Co)'},
+    {n:'Observatorio de investigación en enfermedades del buceo',t:'GORE',m:'$2.000MM',s:'En ejecución',a:'Mauricio Gallardo (Co)'},
+    {n:'Percepciones inclusión discapacidad en educación superior',t:'UCN-U.Andes',m:'$9.4MM',s:'En ejecución',a:'Tomás Bas (IP)'},
+    {n:'Chaire Entrepreneuriat et Intrapreneuriat IMSGeneva',t:'Internacional',m:'$20MM',s:'En ejecución',a:'Tomás Bas (IP)'},
+    {n:'Perspectivas latinoamericanas para una ética del antropoceno',t:'ICALA Internacional',m:'$2MM',s:'En ejecución',a:'Mauricio Gallardo (IP)'},
+    {n:'Sostenibilidad y Competitividad en Empresas Familiares: ESG',t:'Ministerio España / U. Murcia',m:'€51.750',s:'En ejecución',a:'Karen Vargas (Co)'},
+    {n:'Bienestar estudiantil desde la percepción de actores clave UCN',t:'FDPD Interno UCN',m:'$5MM',s:'Aceptado',a:'Vannessa Duarte (Co)'},
+    {n:'Modelo de Gestión reducción desperdicio inventarios perecibles',t:'Women UP I+D',m:'Sin monto',s:'Aceptado',a:'Carla Andrade (IP)'},
+    {n:'Fondecyt Iniciación 2027 (Talk-Walk Gap ESG)',t:'ANID',m:'A postular',s:'A postular',a:'Karen Vargas (IP)'},
+    {n:'Digital Transformation and Waste Reduction in Agro-Industrial SMEs',t:'ANID / UCN',m:'$9MM',s:'A postular',a:'Carla Andrade (IP)'},
+    {n:'Centro regional de datos',t:'GORE FICR',m:'$200MM',s:'A postular (2027)',a:'Erick De La Barra (IP)'},
+  ];
+  const tw=pubs.length, wos=pubs.filter(p=>p.x==='WoS').length, sco=pubs.filter(p=>p.x==='Scopus').length;
+  const q1=pubs.filter(p=>p.q==='Q1').length, q2=pubs.filter(p=>p.q==='Q2').length, q3=pubs.filter(p=>p.q==='Q3').length;
+  const q4=pubs.filter(p=>p.q==='Q4').length, qsc=pubs.filter(p=>p.q==='SC').length;
+  const pe=projs.filter(p=>p.s==='En ejecución').length, pa=projs.filter(p=>p.s==='Aceptado').length, pp=projs.filter(p=>p.s.includes('postular')).length;
+  let h=`<h2 style="font-size:16px;font-weight:600;margin-bottom:16px;letter-spacing:-.01em">Resumen de Escuela — PTA 2026</h2>
+  <div style="margin-bottom:8px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--tx2)">Promedio % comprometido por jerarquía</div>
+  <div class="javg">`;
+  jers.forEach(j=>{
+    h+=`<div class="ja"><div class="jat" style="color:${j.c}">${j.l} <span style="font-weight:400;color:var(--tx3)">(n=${j.d.length})</span></div>`;
+    [{l:'Docencia',k:'d',c:'#1A4FBA'},{l:'Investigación',k:'i',c:'#0D6E4A'},{l:'Vinculación',k:'v',c:'#4A3BA8'},{l:'Gestión',k:'g',c:'#A05F00'}].forEach(d=>{
+      const v=avg(j.d,d.k);
+      h+=`<div class="jad"><span class="jal">${d.l}</span><span class="jav" style="color:${d.c}">${v}%</span></div>
+          <div class="jabw"><div class="jabf" style="width:${v}%;background:${d.c}"></div></div>`;
+    });
+    h+=`</div>`;
+  });
+  h+=`</div><div class="rg2">
+  <div class="rc"><div class="rch">📄 Publicaciones comprometidas <span style="font-size:11px;font-weight:400;color:var(--tx2);margin-left:auto">${tw} total</span></div>
+  <div class="rcb"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div class="sc"><div class="sn" style="color:var(--bl)">${wos}</div><div class="sl">WoS</div></div>
+    <div class="sc"><div class="sn" style="color:var(--pu)">${sco}</div><div class="sl">Scopus</div></div>
+    <div class="sc"><div class="sn" style="color:var(--gn)">${q1}</div><div class="sl">Q1</div></div>
+    <div class="sc"><div class="sn" style="color:var(--am)">${q2}</div><div class="sl">Q2</div></div>
+    <div class="sc"><div class="sn" style="color:var(--rd)">${q3}</div><div class="sl">Q3</div></div>
+    <div class="sc"><div class="sn" style="color:var(--tx2)">${q4+qsc}</div><div class="sl">Q4 / Sin clasificar</div></div>
+  </div></div></div>
+  <div class="rc"><div class="rch">🔬 Proyectos de investigación <span style="font-size:11px;font-weight:400;color:var(--tx2);margin-left:auto">${projs.length} total</span></div>
+  <div class="rcb"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div class="sc"><div class="sn" style="color:var(--gn)">${pe}</div><div class="sl">En ejecución</div></div>
+    <div class="sc"><div class="sn" style="color:var(--am)">${pa}</div><div class="sl">Aceptado</div></div>
+    <div class="sc"><div class="sn" style="color:var(--bl)">${pp}</div><div class="sl">A postular</div></div>
+    <div class="sc"><div class="sn" style="color:var(--tx2)">${projs.filter(p=>p.t.includes('GORE')).length}</div><div class="sl">Financiados GORE</div></div>
+  </div></div></div>
+  </div>
+  <div class="rful"><div class="rch" style="padding:12px 16px">📄 Detalle publicaciones por académico</div>
+  <div style="overflow-x:auto"><table class="rt" style="min-width:600px"><tr>
+    <th style="padding-left:16px">Académico</th><th>Publicación / Tema</th><th>Índice</th><th>Cuartil</th><th>Jerarquía</th>
+  </tr>`;
+  pubs.forEach(p=>{
+    const tx=p.x==='WoS'?'<span class="chip cw">WoS</span>':'<span class="chip cs">Scopus</span>';
+    const tq={Q1:'<span class="chip c1">Q1</span>',Q2:'<span class="chip c2">Q2</span>',Q3:'<span class="chip c3">Q3</span>',Q4:'<span class="chip c4">Q4</span>',SC:'<span class="chip c4">SC</span>'}[p.q]||'';
+    const jl={SJ:'Sin Jerarquía',AS:'Asistente',AC:'Asociado',TI:'Titular'}[p.j]||p.j;
+    h+=`<tr><td style="padding-left:16px;white-space:nowrap">${p.a}</td><td style="max-width:280px">${p.t}</td><td>${tx}</td><td>${tq}</td><td style="font-size:11px;color:var(--tx2)">${jl}</td></tr>`;
+  });
+  h+=`</table></div></div>
+  <div class="rful"><div class="rch" style="padding:12px 16px">🔬 Detalle proyectos de investigación</div>
+  <div style="overflow-x:auto"><table class="rt" style="min-width:600px"><tr>
+    <th style="padding-left:16px">Proyecto</th><th>Tipo</th><th>Monto</th><th>Estado</th><th>Académico(s)</th>
+  </tr>`;
+  projs.forEach(p=>{
+    const es=p.s==='En ejecución'?'<span class="chip c1">En ejecución</span>':p.s==='Aceptado'?'<span class="chip c2">Aceptado</span>':'<span class="chip c4">A postular</span>';
+    h+=`<tr><td style="padding-left:16px;max-width:220px">${p.n}</td><td style="white-space:nowrap;font-size:11px">${p.t}</td><td style="white-space:nowrap;font-family:'IBM Plex Mono',monospace;font-size:11px">${p.m}</td><td>${es}</td><td style="font-size:11px;color:var(--tx2)">${p.a}</td></tr>`;
+  });
+  h+=`</table></div></div>`;
+  p.innerHTML=h;
+}
+
+function sw(j){
+  const all=['res',...JL];
+  all.forEach(k=>document.getElementById('p-'+k).classList.remove('active'));
+  document.querySelectorAll('.tb').forEach((b,i)=>b.classList.toggle('active',all[i]===j));
+  document.getElementById('p-'+j).classList.add('active');
+  if(j==='res')renderRes();else rp(j);
+}
+function oa(j){ej=j;ei=null;document.getElementById('mtit').textContent='Agregar — '+LB[j];['fn','fc','fd','fi','fv','fg','fdd','fid','fvd','fgd','fod','fo'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('fe').value='r';document.getElementById('th').style.display='none';document.getElementById('mo').classList.add('open');}
+function oe(j,idx){ej=j;ei=idx;const a=D[j][idx];document.getElementById('mtit').textContent='Editar — '+a.n;['fn','fc'].forEach(id=>document.getElementById('f'+id.slice(1)).value=a[id.slice(1)]||'');document.getElementById('fn').value=a.n||'';document.getElementById('fc').value=a.c||'';document.getElementById('fd').value=a.d||'';document.getElementById('fi').value=a.i||'';document.getElementById('fv').value=a.v||'';document.getElementById('fg').value=a.g||'';document.getElementById('fdd').value=a.dd||'';document.getElementById('fid').value=a.id||'';document.getElementById('fvd').value=a.vd||'';document.getElementById('fgd').value=a.gd||'';document.getElementById('fod').value=a.od||'';document.getElementById('fo').value=a.o||'';document.getElementById('fe').value=a.e||'r';uh();document.getElementById('mo').classList.add('open');}
+function uh(){const tot=['fd','fi','fv','fg'].reduce((s,id)=>s+(parseFloat(document.getElementById(id).value)||0),0);const th=document.getElementById('th');if(tot>0){th.style.display='block';const ok=Math.round(tot)===100;th.className='th '+(ok?'ok':'bad');th.textContent='Total: '+Math.round(tot)+'%'+(ok?' ✓':' — debe sumar 100%');}else th.style.display='none';}
+['fd','fi','fv','fg'].forEach(id=>document.getElementById(id).addEventListener('input',uh));
+function cm(){document.getElementById('mo').classList.remove('open');}
+function sa(){const n=document.getElementById('fn').value.trim();if(!n){alert('Ingresa el nombre.');return;}const a={n,c:document.getElementById('fc').value.trim(),e:document.getElementById('fe').value,d:parseFloat(document.getElementById('fd').value)||0,i:parseFloat(document.getElementById('fi').value)||0,v:parseFloat(document.getElementById('fv').value)||0,g:parseFloat(document.getElementById('fg').value)||0,dd:document.getElementById('fdd').value.trim(),id:document.getElementById('fid').value.trim(),vd:document.getElementById('fvd').value.trim(),gd:document.getElementById('fgd').value.trim(),od:document.getElementById('fod').value.trim(),o:document.getElementById('fo').value.trim()};if(ei!==null)D[ej][ei]=a;else D[ej].push(a);cm();rp(ej);}
+function da(j,idx){if(!confirm('Eliminar a '+D[j][idx].n+'?'))return;D[j].splice(idx,1);rp(j);}
+document.getElementById('mo').addEventListener('click',function(e){if(e.target===this)cm();});
+renderRes();
+</script>
+</body>
+</html>
